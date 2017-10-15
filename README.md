@@ -1,10 +1,10 @@
 # SEQ-Euclid
 
-A 4 channel Euclidian sequencer for [VCV Rack] (vcvrack.com) based on the SEQ3 built in sequencer.
+A 4 channel Euclidian sequencer for [VCV Rack](vcvrack.com) based on the SEQ3 built in sequencer.
 
-This is based on the paper [The Euclidean algorithm generates traditional musical rhythms] (http://cgm.cs.mcgill.ca/~godfried/rhythm-and-mathematics.html) from Proceedings of BRIDGES: Mathematical Connections in Art, Music, and Science by Godfried T. Toussaint and the SEQ-3 built-in from vcvrack.
+This is based on the paper [The Euclidean algorithm generates traditional musical rhythms](http://cgm.cs.mcgill.ca/~godfried/rhythm-and-mathematics.html) from Proceedings of BRIDGES: Mathematical Connections in Art, Music, and Science by Godfried T. Toussaint and the SEQ-3 built-in from vcvrack.
 
-If you are interested in trying this yourself I would recommend looking at the Bjorklund paper The Theory of Rep-Rate Pattern Generation in the SNS Timing System  [SNS-NOTE-CNTRL-99] (https://www.google.ca/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjnms7w0vPWAhWlx4MKHafnCJQQFggpMAA&url=https%3A%2F%2Fpdfs.semanticscholar.org%2Fc652%2Fd0a32895afc5d50b6527447824c31a553659.pdf&usg=AOvVaw1CzsXZMPaPY938Z1PG5zBC) for implementation information.
+If you are interested in trying this yourself I would recommend looking at the Bjorklund paper The Theory of Rep-Rate Pattern Generation in the SNS Timing System [SNS-NOTE-CNTRL-99](https://www.google.ca/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjnms7w0vPWAhWlx4MKHafnCJQQFggpMAA&url=https%3A%2F%2Fpdfs.semanticscholar.org%2Fc652%2Fd0a32895afc5d50b6527447824c31a553659.pdf&usg=AOvVaw1CzsXZMPaPY938Z1PG5zBC) for implementation information.
 
 
 ## Building
