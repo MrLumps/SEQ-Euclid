@@ -2,7 +2,7 @@
 
 A 4 channel Euclidian sequencer for [VCV Rack](vcvrack.com) based on the SEQ3 built in sequencer.
 
-This is based on the paper [The Euclidean algorithm generates traditional musical rhythms](http://cgm.cs.mcgill.ca/~godfried/rhythm-and-mathematics.html) from Proceedings of BRIDGES: Mathematical Connections in Art, Music, and Science by Godfried T. Toussaint and the SEQ-3 built-in from vcvrack.
+This uses ideas from the paper [The Euclidean algorithm generates traditional musical rhythms](http://cgm.cs.mcgill.ca/~godfried/rhythm-and-mathematics.html) from Proceedings of BRIDGES: Mathematical Connections in Art, Music, and Science by Godfried T. Toussaint and the SEQ-3 built-in from vcvrack.
 
 If you are interested in trying this yourself I would recommend looking at the Bjorklund paper The Theory of Rep-Rate Pattern Generation in the SNS Timing System [SNS-NOTE-CNTRL-99](https://www.google.ca/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjnms7w0vPWAhWlx4MKHafnCJQQFggpMAA&url=https%3A%2F%2Fpdfs.semanticscholar.org%2Fc652%2Fd0a32895afc5d50b6527447824c31a553659.pdf&usg=AOvVaw1CzsXZMPaPY938Z1PG5zBC) for implementation information.
 
@@ -33,7 +33,7 @@ If you're here you're probably building this yourself, starting this up with no 
 ## Usage 
 The basic idea is that you select a bank to use, enter a pattern fill amount, a pattern length, a probability amount and wire the output to something that needs gates or triggers.
 
-The algorithm created by Bjorklun that's being used to create these patterns will take pattern length and evenly place fill amount of beats in it.
+The algorithm created by Bjorklun that's created these patterns will take pattern length and evenly place fill amount of beats in it.
 
 For example 5 and 7 will result in a pattern of 1011011 while 5 and 12 results with 100101001010.
 
