@@ -14,6 +14,7 @@
 #define FONT_FILE      assetPlugin(plugin, "res/Segment7Standard.ttf")
 
 
+
 struct SEQEuclid : Module {
   enum ParamIds {
     BPM_PARAM,
@@ -82,99 +83,6 @@ struct SEQEuclid : Module {
   };
 
 
-
-  // simple timed signal state wrangler thingie
-  // replace with built-in in 032
-  struct GateLatch {
-  public:
-    enum LatchStates {
-      OFF,
-      RISING,
-      ON,
-      FALLING
-    };
-
-  private:
-    double time;
-    double gateTime;
-    LatchStates myState;
-    const double minLength = 10.0 / 10000;
-
-  public:
-    GateLatch() {
-      myState = OFF;
-      time = 0.0;
-      gateTime = 0.0;
-    }
-
-    // Call 1st each step
-    inline void step(const double &newtime) {
-
-      const double dt =  newtime - time;
-      time = newtime;
-
-      if (gateTime > 0.0) {
-        
-        gateTime -= dt;
-        if (gateTime <= 0.0) {
-          myState = OFF;  //Set to off vs falling
-          gateTime = 0.0;
-        }
-
-      }
-
-      if(gateTime > 0.0 || myState) {
-
-        switch (myState) {
-        case RISING:  // triggered on last frame
-          if (gateTime > 0.0) {
-            myState = ON;
-          } else {
-            myState = OFF;  // Set to Off vs falling, we're catching notes on the trailing edge
-          }
-          break;
-        case FALLING:  // Was set to falling last frame, now we go off
-          myState = OFF;
-          break;
-        default:
-          break;
-        }
-
-      }
-
-    }
-
-    // Call to reset
-    void reset() {
-      myState = OFF;
-      gateTime = 0.0;
-    }
-
-    // Call to generate new signal
-    inline void trigger(const double length) {
-      // Only trigger if we're not already triggered
-      if (!myState) {
-        gateTime = length;
-        myState = RISING;
-      }
-    }
-
-    inline void trigger() {
-      // Only trigger if we're not already triggered
-      if (!myState) {
-        gateTime = minLength;
-        myState = RISING;
-      }
-    }
-    
-    inline int state() {
-      return myState;
-    }
-
-  };
-
-
-
   // For accessing the patern data fill must be < length and > 0
   // if fill is >= length just output 1's
   // if fill is 0 output nothing
@@ -185,7 +93,7 @@ struct SEQEuclid : Module {
     bool coinFlip;
     bool noteOn;
     SchmittTrigger jogTrigger;
-    GateLatch gate;
+    PulseGenerator gate;
     Lcg rng;
 
     
@@ -199,7 +107,8 @@ struct SEQEuclid : Module {
       currentStep = 0;
       coinFlip = false;
       noteOn = false;
-      gate.reset();
+      gate.pulseTime = 0.0f;
+      gate.time = 0.0f;
       rng.seed = 738;
     }
 
@@ -324,10 +233,10 @@ void SEQEuclid::step() {
 
     }
 
-    bank1.gate.step(time);
-    bank2.gate.step(time);
-    bank3.gate.step(time);
-    bank4.gate.step(time);
+    bank1.gate.process(dTime);
+    bank2.gate.process(dTime);
+    bank3.gate.process(dTime);
+    bank4.gate.process(dTime);
   }
 
 
@@ -340,16 +249,20 @@ void SEQEuclid::step() {
   // Reset inputs
   if (resetTrigger.process(params[RESET_BUTTON].value + inputs[RESET_INPUT].value)) {
       bank1.currentStep = 0;
-      bank1.gate.reset();
+      bank1.gate.pulseTime = 0.0f;
+      bank1.gate.time = 0.0f;
       
       bank2.currentStep = 0;
-      bank2.gate.reset();
+      bank2.gate.pulseTime = 0.0f;
+      bank2.gate.time = 0.0f;
       
       bank3.currentStep = 0;
-      bank3.gate.reset();
+      bank3.gate.pulseTime = 0.0f;
+      bank3.gate.time = 0.0f;
   
       bank4.currentStep = 0;
-      bank4.gate.reset();
+      bank4.gate.pulseTime = 0.0f;
+      bank4.gate.time = 0.0f;
   }
 
   // Bank controls
@@ -404,10 +317,11 @@ void SEQEuclid::step() {
   }
       
   // Set output high if there's a note currently latched on
-  const float gate1 = (bank1.gate.state()) ? 10.0f : 0.0f;
-  const float gate2 = (bank2.gate.state()) ? 10.0f : 0.0f;
-  const float gate3 = (bank3.gate.state()) ? 10.0f : 0.0f;
-  const float gate4 = (bank4.gate.state()) ? 10.0f : 0.0f;
+  // gate.process(0.0f) to get the current state without advancing time
+  const float gate1 = (bank1.gate.process(0.0f)) ? 10.0f : 0.0f;
+  const float gate2 = (bank2.gate.process(0.0f)) ? 10.0f : 0.0f;
+  const float gate3 = (bank3.gate.process(0.0f)) ? 10.0f : 0.0f;
+  const float gate4 = (bank4.gate.process(0.0f)) ? 10.0f : 0.0f;
     
   // blast out a trigger for new events
   const float trigger1 = (bank1.noteOn && nextStep) ? 10.0f : 0.0f;
