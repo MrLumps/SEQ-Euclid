@@ -222,8 +222,6 @@ void SEQEuclid::step() {
       
       if (dTime > timerTime) {
         timerTime = 0.0;
-      }  else {
-        timerTime -= dTime;
       }
 
       if (timerTime <= 0.0) {
